@@ -82,7 +82,7 @@
   /* ── TV wrap: relative container, aspect-ratio matches SVG viewBox ── */
   .tv-wrap {
     position: relative;
-    width: min(480px, 92dvw, calc(94svh * 0.8));
+    width: min(92dvw, calc(94svh * 0.8));
     aspect-ratio: 480 / 600;
     filter: drop-shadow(0 24px 64px rgba(0,0,0,0.82));
   }
@@ -999,7 +999,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.3';
+    const APP_VERSION = '1.0.4';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -1548,7 +1548,7 @@ function showError(msg) {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v4';
+const CACHE = 'memory-lane-v5';
 const FILES = [
   './',
   './index.html',
