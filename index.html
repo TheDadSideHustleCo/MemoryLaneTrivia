@@ -1030,7 +1030,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.6';
+    const APP_VERSION = '1.0.7';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -1088,7 +1088,7 @@ function cgSetAutoRead(on) {
 }
 function cgRefreshUI() {
   const gold = '2px solid #ffd700', off = '2px solid transparent';
-  ['easy','standard','mixed'].forEach(d => {
+  ['memory_care','easy','standard','mixed'].forEach(d => {
     const b = document.getElementById('cg-btn-' + d);
     if (b) b.style.border = d === CG_DIFF_MODE ? gold : off;
   });
@@ -1590,7 +1590,7 @@ function showError(msg) {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v7';
+const CACHE = 'memory-lane-v8';
 const FILES = [
   './',
   './index.html',
