@@ -998,7 +998,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.1';
+    const APP_VERSION = '1.0.2';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -1246,22 +1246,25 @@ function clearYear() {
 }
 
 function updateYearDisplay() {
+  // year-display/year-hint removed with numpad — decade grid handles state via selectDecade()
   const el = document.getElementById('year-display');
-  if (!birthYear) {
-    el.innerHTML = '&mdash;';
-  } else {
-    const padded = birthYear.padEnd(4, '_');
-    el.textContent = padded;
+  if (el) {
+    if (!birthYear) {
+      el.innerHTML = '&mdash;';
+    } else {
+      const padded = birthYear.padEnd(4, '_');
+      el.textContent = padded;
+    }
   }
   const btn = document.getElementById('start-btn');
   const yr = parseInt(birthYear, 10);
   const hint = document.getElementById('year-hint');
   if (birthYear.length === 4 && (yr < 1920 || yr > 1969)) {
     if (hint) { hint.textContent = '⚠ Please enter a year between 1920 and 1969'; hint.style.display = 'block'; }
-    btn.disabled = true;
+    if (btn) btn.disabled = true;
   } else {
     if (hint) hint.style.display = 'none';
-    btn.disabled = birthYear.length !== 4;
+    if (btn) btn.disabled = birthYear.length !== 4;
   }
 }
 
@@ -1544,8 +1547,18 @@ function showError(msg) {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v2';
-const FILES = ['./', './memory-lane-trivia.html'];
+const CACHE = 'memory-lane-v3';
+const FILES = [
+  './',
+  './index.html',
+  './trivia-db-1945-1954.json',
+  './trivia-db-1955-1959.json',
+  './trivia-db-1960-1964.json',
+  './trivia-db-1965-1969.json',
+  './trivia-db-1970-1974.json',
+  './trivia-db-1975-1979.json',
+  './trivia-db-1980-1984.json'
+];
 self.addEventListener('install', e => e.waitUntil(
   caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())
 ));
