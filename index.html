@@ -180,7 +180,7 @@
 
   .header-score {
     color: var(--gold);
-    font-size: clamp(12px, 3.5cqw, 16px);
+    font-size: clamp(16px, 3.5cqw, 18px); /* #2: raised floor from 12px to 16px */
     font-weight: bold;
     background: rgba(0,0,0,0.3);
     padding: 4px 12px;
@@ -269,7 +269,7 @@
 
   .welcome-sub {
     color: var(--cream);
-    font-size: clamp(11px, 2.8cqw, 14px);
+    font-size: clamp(16px, 2.8cqw, 18px); /* #2: raised floor from 11px to 16px */
     margin-bottom: 8px;
     opacity: 0.75;
     line-height: 1.3;
@@ -278,7 +278,7 @@
   /* === BIRTH YEAR INPUT === */
   .birth-year-label {
     color: var(--gold);
-    font-size: clamp(12px, 3cqw, 16px);
+    font-size: clamp(16px, 3cqw, 18px); /* #2: raised floor from 12px to 16px */
     font-weight: bold;
     margin-bottom: 4px;
     display: block;
@@ -447,7 +447,7 @@
     border: 2px solid var(--gold-dark);
     border-radius: 20px;
     color: var(--gold);
-    font-size: clamp(11px, 2.8vw, 14px);
+    font-size: clamp(16px, 2.8vw, 18px); /* #2: raised floor from 11px to 16px */
     padding: 3px 12px;
     margin-bottom: 6px;
     letter-spacing: 1px;
@@ -455,7 +455,7 @@
 
   .question-number {
     color: rgba(255,248,231,0.6);
-    font-size: clamp(11px, 2.5vw, 13px);
+    font-size: clamp(16px, 2.5vw, 18px); /* #2: raised floor from 11px to 16px */
     margin-bottom: 4px;
   }
 
@@ -604,7 +604,7 @@
 
   .fun-fact-label {
     color: var(--gold);
-    font-size: clamp(12px, 3cqw, 14px);
+    font-size: clamp(16px, 3cqw, 18px); /* #2: raised floor from 12px to 16px */
     font-weight: bold;
     letter-spacing: 1px;
     margin-bottom: 3px;
@@ -613,9 +613,34 @@
 
   .fun-fact-text {
     color: var(--cream);
-    font-size: clamp(13px, 3.5cqw, 16px);
+    font-size: clamp(16px, 3.5cqw, 18px); /* #2: raised floor from 13px to 16px */
     line-height: 1.4;
     opacity: 0.9;
+  }
+
+  /* === CAREGIVER CONVERSATION PROMPT (#6) === */
+  .cg-prompt-box {
+    display: none;
+    margin-top: 10px;
+    padding: 8px 10px;
+    background: rgba(100,160,255,0.10);
+    border-left: 3px solid rgba(100,180,255,0.55);
+    border-radius: 0 6px 6px 0;
+  }
+  .cg-prompt-box.show { display: block; }
+  .cg-prompt-label {
+    color: rgba(160,210,255,0.9);
+    font-size: clamp(11px, 2.5cqw, 13px);
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .cg-prompt-text {
+    color: rgba(220,240,255,0.9);
+    font-size: clamp(15px, 3.2cqw, 17px);
+    line-height: 1.4;
+    font-style: italic;
   }
 
   /* === RESULT SCREEN === */
@@ -723,6 +748,41 @@
   .cat-sports::before   { content: '🏆 '; }
   .cat-world_events::before { content: '🌎 '; }
   .cat-pop_culture::before { content: '⭐ '; }
+
+  /* === PAUSE BUTTON === */
+  .pause-btn {
+    background: none;
+    border: none;
+    font-size: clamp(18px, 5cqw, 24px);
+    cursor: pointer;
+    padding: 0 4px;
+    opacity: 0.8;
+    transition: opacity 0.15s, transform 0.15s;
+    touch-action: manipulation;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .pause-btn:active { opacity: 1; transform: scale(1.15); }
+
+  /* === PAUSE OVERLAY SCREEN === */
+  #screen-paused {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    background: rgba(13,13,40,0.96);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 24px 20px;
+    text-align: center;
+    border-radius: 3.2%;
+  }
+  #screen-paused.active { display: flex; }
+  .pause-emoji  { font-size: clamp(40px, 12cqw, 64px); }
+  .pause-title  { color: var(--gold); font-size: clamp(20px, 5.5cqw, 28px); font-weight: bold; }
+  .pause-sub    { color: var(--cream); font-size: clamp(16px, 3.5cqw, 18px); opacity: 0.75; line-height: 1.4; max-width: 280px; }
 
   /* === ANSWER FEEDBACK FLASH === */
   @keyframes flashGreen {
@@ -908,6 +968,7 @@
       <button class="header-home-btn" onclick="changeYear()" title="Return to start">📺</button>
       <div class="header-title">🎙️ Memory Lane Trivia</div>
       <button class="tts-btn" id="tts-btn" onclick="readQuestion()" title="Read question aloud" style="display:none">🔊</button>
+      <button class="pause-btn" id="pause-btn" onclick="pauseGame()" title="Pause game" style="display:none">⏸</button>
       <div class="header-score" id="score-display">0 / 0</div>
     </div>
     <div class="progress-bar-wrap" id="progress-wrap" style="display:none">
@@ -990,6 +1051,11 @@
       <div class="fun-fact-box" id="fun-fact-box">
         <div class="fun-fact-label">✨ Did You Know?</div>
         <div class="fun-fact-text" id="fun-fact-text"></div>
+        <!-- #6: Caregiver conversation prompt -->
+        <div class="cg-prompt-box" id="cg-prompt-box">
+          <div class="cg-prompt-label">💬 Ask your companion</div>
+          <div class="cg-prompt-text" id="cg-prompt-text"></div>
+        </div>
       </div>
 
       <div class="next-btn-dock" id="next-btn-wrap">
@@ -1014,11 +1080,21 @@
     <div class="screen" id="screen-error">
       <div class="error-box">
         <div class="error-title">⚠️ Oops!</div>
-        <div class="error-msg" id="error-msg">Could not load trivia questions. Make sure all files are in the same folder as this game.</div>
+        <div class="error-msg" id="error-msg">Could not load trivia questions. Please try refreshing the page.</div>
       </div>
       <div style="margin-top:20px">
         <button class="big-btn" onclick="location.reload()">Try Again</button>
       </div>
+    </div>
+
+    <!-- SCREEN: PAUSED -->
+    <div id="screen-paused">
+      <div class="pause-emoji">☕</div>
+      <div class="pause-title">Game Paused</div>
+      <div class="pause-sub">Take your time — we'll be right here whenever you're ready.</div>
+      <button class="big-btn" onclick="resumeGame()" style="max-width:240px; margin-top:8px">
+        Resume ▶
+      </button>
     </div>
 
     </div><!-- /tv-screen -->
@@ -1030,21 +1106,48 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.8';
+    const APP_VERSION = '1.0.9';
 
-// ─── STATE ───────────────────────────────────────────────────────────────────
+// ─── SAFE STORAGE (localStorage with in-memory fallback) ──────────────────────
+// #7: In kiosk or private-browsing environments localStorage may be unavailable.
+// This wrapper silently falls back to a plain object so caregiver settings still
+// work for the duration of the session, even if they won't persist across reloads.
+const _memStore = {};
+const safeStorage = {
+  getItem(key) {
+    try { return localStorage.getItem(key); } catch(e) { return _memStore[key] ?? null; }
+  },
+  setItem(key, value) {
+    try { localStorage.setItem(key, value); } catch(e) { _memStore[key] = String(value); }
+  }
+};
+
+
 let allQuestions = [];
 let gameQuestions = [];
 let currentIdx    = 0;
 let score         = 0;
 let answered      = false;
+let paused        = false;  // #4: pause/resume state
 let birthYear     = '';
 let eraStart      = 0;
 let eraEnd        = 0;
-let QUESTIONS_PER_GAME = parseInt(localStorage.getItem('cg_count') || '10', 10);  // default 10 for seniors
-let CG_DIFF_MODE       = localStorage.getItem('cg_diff') || 'easy';               // default easy for seniors
-let CG_HIDE_SCORE      = localStorage.getItem('cg_hide_score') === 'true';
-let CG_AUTO_READ       = localStorage.getItem('cg_auto_read') === 'true';
+let QUESTIONS_PER_GAME = parseInt(safeStorage.getItem('cg_count') || '10', 10);  // default 10 for seniors
+let CG_DIFF_MODE       = safeStorage.getItem('cg_diff') || 'easy';               // default easy for seniors
+// #3: Hide score by default in memory_care mode if no explicit preference has been saved
+let CG_HIDE_SCORE      = safeStorage.getItem('cg_hide_score') !== null
+  ? safeStorage.getItem('cg_hide_score') === 'true'
+  : (safeStorage.getItem('cg_diff') === 'memory_care');
+let CG_AUTO_READ       = safeStorage.getItem('cg_auto_read') === 'true';
+// #6: Conversation prompts — default ON (null = not yet set = treat as true)
+let CG_PROMPTS         = safeStorage.getItem('cg_prompts') !== 'false';
+// #8: Category filter — a Set of enabled category groups, default all on
+const ALL_CAT_GROUPS   = ['music','tv','film','sports','world','culture'];
+let CG_CATEGORIES      = (function() {
+  const saved = safeStorage.getItem('cg_categories');
+  if (!saved) return new Set(ALL_CAT_GROUPS);
+  try { return new Set(JSON.parse(saved)); } catch(e) { return new Set(ALL_CAT_GROUPS); }
+})();
 
 // ─── CAREGIVER PANEL ─────────────────────────────────────────────────────────
 let _cgTapTimer = null, _cgTapCount = 0;
@@ -1064,26 +1167,48 @@ function cgClose() {
 }
 function cgSetDiff(mode) {
   CG_DIFF_MODE = mode;
-  localStorage.setItem('cg_diff', mode);
+  safeStorage.setItem('cg_diff', mode);
+  // #3: Auto-hide score when Memory Care mode is selected
+  if (mode === 'memory_care' && !CG_HIDE_SCORE) {
+    cgSetScore(true);
+  }
   cgRefreshUI();
 }
 function cgSetCount(n) {
   QUESTIONS_PER_GAME = n;
-  localStorage.setItem('cg_count', n);
+  safeStorage.setItem('cg_count', n);
   cgRefreshUI();
 }
 function cgSetScore(hide) {
   CG_HIDE_SCORE = hide;
-  localStorage.setItem('cg_hide_score', hide);
+  safeStorage.setItem('cg_hide_score', hide);
   const el = document.getElementById('score-display');
   if (el) el.style.display = hide ? 'none' : '';
   cgRefreshUI();
 }
 function cgSetAutoRead(on) {
   CG_AUTO_READ = on;
-  localStorage.setItem('cg_auto_read', on);
+  safeStorage.setItem('cg_auto_read', on);
   const btn = document.getElementById('tts-btn');
   if (btn) btn.style.display = on ? '' : 'none';
+  cgRefreshUI();
+}
+// #6: Conversation prompts setter
+function cgSetPrompts(on) {
+  CG_PROMPTS = on;
+  safeStorage.setItem('cg_prompts', on);
+  cgRefreshUI();
+}
+// #8: Category filter toggle
+function cgToggleCategory(group) {
+  if (CG_CATEGORIES.has(group)) {
+    // Don't allow deselecting the last one
+    if (CG_CATEGORIES.size === 1) return;
+    CG_CATEGORIES.delete(group);
+  } else {
+    CG_CATEGORIES.add(group);
+  }
+  safeStorage.setItem('cg_categories', JSON.stringify([...CG_CATEGORIES]));
   cgRefreshUI();
 }
 function cgRefreshUI() {
@@ -1104,6 +1229,19 @@ function cgRefreshUI() {
   const ra = document.getElementById('cg-btn-read-auto');
   if (ro) ro.style.border = !CG_AUTO_READ ? gold : off;
   if (ra) ra.style.border = CG_AUTO_READ  ? gold : off;
+  // #6: conversation prompts toggle highlight
+  const po = document.getElementById('cg-btn-prompts-off');
+  const pa = document.getElementById('cg-btn-prompts-on');
+  if (po) po.style.border = !CG_PROMPTS ? gold : off;
+  if (pa) pa.style.border = CG_PROMPTS  ? gold : off;
+  // #8: category filter button highlights
+  ALL_CAT_GROUPS.forEach(g => {
+    const b = document.getElementById('cg-cat-' + g);
+    if (b) {
+      b.style.border   = CG_CATEGORIES.has(g) ? gold : off;
+      b.style.opacity  = CG_CATEGORIES.has(g) ? '1' : '0.45';
+    }
+  });
 }
 
 // ─── DECADE SELECTOR ─────────────────────────────────────────────────────────
@@ -1387,14 +1525,41 @@ function startGame() {
     if (pool.length < 5) pool = easy.concat(std); // fallback
   }
 
+  // #8: Apply category filter — map display groups to raw DB category strings
+  const CAT_GROUP_MAP = {
+    music:   ['music'],
+    tv:      ['tv', 'television'],
+    film:    ['film', 'movies', 'film_tv'],
+    sports:  ['sports'],
+    world:   ['world_events', 'news', 'cost', 'culture'],
+    culture: ['pop_culture', 'everyday_life', 'food', 'holidays', 'famous_people'],
+  };
+  // Only filter if something is actually deselected (all-on = no filter needed)
+  if (CG_CATEGORIES.size < ALL_CAT_GROUPS.length) {
+    const allowed = new Set(
+      [...CG_CATEGORIES].flatMap(g => CAT_GROUP_MAP[g] || [])
+    );
+    const filtered = pool.filter(q => allowed.has(q.category));
+    // Only apply if it leaves enough questions — else ignore filter gracefully
+    if (filtered.length >= 5) pool = filtered;
+  }
+
   gameQuestions = shuffle(pool).slice(0, QUESTIONS_PER_GAME);
   currentIdx = 0;
   score = 0;
+  paused = false;  // #4: reset pause state on new game
 
   document.getElementById('era-badge').textContent =
     `Your Golden Era: ${eraStart}–${eraEnd}`;
   document.getElementById('header').style.display = '';
   document.getElementById('progress-wrap').style.display = '';
+  // #4: show pause button, ensure correct icon state
+  const pauseBtn = document.getElementById('pause-btn');
+  pauseBtn.style.display = '';
+  pauseBtn.textContent = '⏸';
+  pauseBtn.onclick = pauseGame;
+  // #4: hide pause overlay in case it was left showing
+  document.getElementById('screen-paused').classList.remove('active');
 
   updateScoreDisplay();
   showScreen('question');
@@ -1410,7 +1575,71 @@ function changeYear() {
   updateYearDisplay();
   document.getElementById('header').style.display = 'none';
   document.getElementById('progress-wrap').style.display = 'none';
+  // #4: hide pause button and clear any active pause overlay
+  document.getElementById('pause-btn').style.display = 'none';
+  document.getElementById('screen-paused').classList.remove('active');
+  paused = false;
   showScreen('welcome');
+}
+
+// ─── CAREGIVER CONVERSATION PROMPTS (#6) ─────────────────────────────────────
+// Category-aware prompt pools — pick a random prompt from the matching category.
+// Prompts are open-ended to invite reminiscing, not quiz-style questions.
+const CG_PROMPT_POOLS = {
+  music: [
+    'Do you remember hearing this song? Where were you?',
+    'Did you ever dance to music like this?',
+    'Do you remember a favourite singer or band from this time?',
+    'What music did you love most when you were young?',
+    'Did your family listen to music together at home?',
+  ],
+  television: [
+    'Do you remember watching this show? Who did you watch it with?',
+    'What TV shows did you look forward to most?',
+    'Did your family gather around the TV together?',
+    'Do you remember when you first got a television at home?',
+    'What was your favourite programme from those days?',
+  ],
+  movies: [
+    'Did you ever see this film? What do you remember about it?',
+    'Do you remember going to the cinema in those days?',
+    'Who did you usually go to the movies with?',
+    'What was your favourite film from your younger years?',
+    'Do you remember a special trip to the cinema that stands out?',
+  ],
+  sports: [
+    'Were you a fan of this sport? Did you ever play it?',
+    'Do you remember watching or listening to sports events back then?',
+    'Did you have a favourite team or sportsperson?',
+    'Was sport a big part of life when you were growing up?',
+    'Do you remember any exciting games or matches from those years?',
+  ],
+  world_events: [
+    'Do you remember when this happened? Where were you at the time?',
+    'How did the people around you react to events like this?',
+    'Were big news events talked about much in your household?',
+    'Do you remember reading the newspaper or listening to the radio for news?',
+    'What world event from your lifetime stands out most in your memory?',
+  ],
+  pop_culture: [
+    'Do you remember this being popular? Did you enjoy it?',
+    'What were the big trends and fashions when you were young?',
+    'Do you have a favourite memory from those days?',
+    'What did you and your friends like to do for fun back then?',
+    'Is there something from that era you still think about fondly?',
+  ],
+};
+// Generic fallback pool used when a category doesn't match
+const CG_PROMPT_FALLBACK = [
+  'Do you remember this time? What was life like for you then?',
+  'Does this bring back any memories for you?',
+  'What do you remember most fondly from those years?',
+  "Is there a story from around that time you'd like to share?",
+];
+
+function getConversationPrompt(category) {
+  const pool = CG_PROMPT_POOLS[category] || CG_PROMPT_FALLBACK;
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
 // ─── QUESTION RENDERING ───────────────────────────────────────────────────────
@@ -1468,6 +1697,7 @@ function renderQuestion() {
   }
 
   document.getElementById('fun-fact-box').classList.remove('show');
+  document.getElementById('cg-prompt-box').classList.remove('show');  // #6
   document.getElementById('next-btn-wrap').classList.remove('show');
 
   // Progress bar
@@ -1482,7 +1712,7 @@ function renderQuestion() {
 
 // ─── ANSWERING ────────────────────────────────────────────────────────────────
 function answer(idx) {
-  if (answered) return;
+  if (answered || paused) return;  // #4: ignore taps while paused
   answered = true;
   unlockAudio();
 
@@ -1515,6 +1745,16 @@ function answer(idx) {
   // Show fun fact
   document.getElementById('fun-fact-text').textContent = q.fun_fact || '';
   document.getElementById('fun-fact-box').classList.add('show');
+
+  // #6: Show caregiver conversation prompt if enabled
+  const promptBox = document.getElementById('cg-prompt-box');
+  if (CG_PROMPTS) {
+    document.getElementById('cg-prompt-text').textContent = getConversationPrompt(q.category);
+    promptBox.classList.add('show');
+  } else {
+    promptBox.classList.remove('show');
+  }
+
   document.getElementById('next-btn-wrap').classList.add('show');
 
   updateScoreDisplay();
@@ -1540,180 +1780,4 @@ function showResult() {
   const pct = Math.round((score / total) * 100);
 
   document.getElementById('result-score').textContent =
-    `You got ${score} out of ${total} correct`;
-  document.getElementById('result-percent').textContent = `${pct}%`;
-
-  let emoji, title, message;
-  if (pct >= 90) {
-    emoji = '🏆'; title = 'Memory Champion!';
-    message = `Incredible! You remembered ${score} out of ${total}. The golden years are crystal clear in your mind!`;
-  } else if (pct >= 75) {
-    emoji = '⭐'; title = 'Golden Memory!';
-    message = `Wonderful job! You clearly lived through some amazing times. ${score} correct answers!`;
-  } else if (pct >= 60) {
-    emoji = '🎉'; title = 'Good Going!';
-    message = `${score} correct — you remember more than you think! The 1950s through 80s were special years.`;
-  } else if (pct >= 40) {
-    emoji = '😊'; title = 'Nice Try!';
-    message = `${score} out of ${total}. Some memories fade, but the music and moments never really leave us.`;
-  } else {
-    emoji = '💫'; title = 'Keep Playing!';
-    message = `${score} correct this round. Every game brings back more memories — try again!`;
-  }
-
-  document.getElementById('result-emoji').textContent = emoji;
-  document.getElementById('result-title').textContent = title;
-  document.getElementById('result-message').textContent = message;
-
-  const pBar = document.getElementById('progress-bar');
-  pBar.style.width = '100%';
-
-  showScreen('result');
-
-  if (pct >= 75) {
-    setTimeout(() => { playDing(); launchConfetti(); }, 300);
-    setTimeout(() => { playDing(); launchConfetti(); }, 800);
-  } else {
-    setTimeout(playDing, 300);
-  }
-}
-
-// ─── NAVIGATION ───────────────────────────────────────────────────────────────
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-}
-
-function showError(msg) {
-  document.getElementById('error-msg').textContent = msg;
-  showScreen('error');
-}
-
-// ─── INIT ─────────────────────────────────────────────────────────────────────
-(async function init() {
-  showScreen('loading');
-  try {
-    await loadAllQuestions();
-    if (allQuestions.length === 0) {
-      showError('No trivia questions could be loaded. Make sure the JSON files are in the same folder as this game file.');
-      return;
-    }
-    showScreen('welcome');
-    updateYearDisplay();
-  } catch(e) {
-    showError('An unexpected error occurred: ' + e.message);
-  }
-})();
-
-// ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  const swCode = `
-const CACHE = 'memory-lane-v9';
-const FILES = [
-  './',
-  './index.html',
-  './trivia-db-1945-1954.json',
-  './trivia-db-1955-1959.json',
-  './trivia-db-1960-1964.json',
-  './trivia-db-1965-1969.json',
-  './trivia-db-1970-1974.json',
-  './trivia-db-1975-1979.json',
-  './trivia-db-1980-1984.json'
-];
-self.addEventListener('install', e => e.waitUntil(
-  caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())
-));
-self.addEventListener('activate', e => e.waitUntil(
-  caches.keys().then(keys => Promise.all(
-    keys.filter(k => k !== CACHE).map(k => caches.delete(k))
-  )).then(() => self.clients.claim())
-));
-self.addEventListener('fetch', e => e.respondWith(
-  caches.match(e.request).then(r => r || fetch(e.request).then(res => {
-    const clone = res.clone();
-    caches.open(CACHE).then(c => c.put(e.request, clone));
-    return res;
-  }))
-));
-`;
-  const blob = new Blob([swCode], { type: 'text/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(() => {});
-}
-
-// ─── PWA MANIFEST ─────────────────────────────────────────────────────────────
-(function() {
-  const manifest = {
-    name: 'Memory Lane Trivia',
-    short_name: 'Memory Lane',
-    start_url: './index.html',
-    display: 'standalone',
-    background_color: '#8B5E3C',
-    theme_color: '#1a1a4e',
-    description: 'Personalized nostalgia trivia for seniors — filtered to your golden years',
-    icons: [
-      { src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%231a1a4e"/><text y=".9em" font-size="80" x="10">📺</text></svg>', sizes: '192x192', type: 'image/svg+xml' }
-    ]
-  };
-  const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-  const url  = URL.createObjectURL(blob);
-  const link = document.createElement('link');
-  link.rel = 'manifest'; link.href = url;
-  document.head.appendChild(link);
-})();
-</script>
-
-<!-- ─── CAREGIVER PANEL ─────────────────────────────────────────────────────── -->
-<div id="cg-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;display:none;align-items:center;justify-content:center">
-  <div style="background:#1a1a4e;border:2px solid rgba(255,248,231,0.3);border-radius:16px;padding:24px;max-width:320px;width:90%;color:#fff8e7;font-family:inherit">
-    <div style="font-size:18px;font-weight:700;margin-bottom:4px;text-align:center">⚙️ Caregiver Settings</div>
-    <div style="font-size:11px;opacity:0.5;text-align:center;margin-bottom:20px">Triple-tap the logo to open · Changes saved automatically</div>
-
-    <div style="margin-bottom:16px">
-      <div style="font-size:13px;font-weight:600;margin-bottom:8px">Difficulty Mode</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button id="cg-btn-memory_care" onclick="cgSetDiff('memory_care')" style="flex:1;min-width:120px;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:13px;cursor:pointer">
-          🧡 Memory Care<br><span style="font-size:10px;opacity:0.7">2 choices, very simple</span>
-        </button>
-        <button id="cg-btn-easy" onclick="cgSetDiff('easy')" style="flex:1;min-width:120px;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:13px;cursor:pointer">
-          🌸 Easy<br><span style="font-size:10px;opacity:0.7">Recognition-based</span>
-        </button>
-        <button id="cg-btn-standard" onclick="cgSetDiff('standard')" style="flex:1;min-width:120px;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:13px;cursor:pointer">
-          🎯 Standard<br><span style="font-size:10px;opacity:0.7">Original difficulty</span>
-        </button>
-        <button id="cg-btn-mixed" onclick="cgSetDiff('mixed')" style="flex:1;min-width:120px;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:13px;cursor:pointer">
-          🎲 Mixed<br><span style="font-size:10px;opacity:0.7">50/50 blend</span>
-        </button>
-      </div>
-    </div>
-
-    <div style="margin-bottom:20px">
-      <div style="font-size:13px;font-weight:600;margin-bottom:8px">Questions per Game</div>
-      <div style="display:flex;gap:8px">
-        <button id="cg-btn-10" onclick="cgSetCount(10)" style="flex:1;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:14px;cursor:pointer">10</button>
-        <button id="cg-btn-20" onclick="cgSetCount(20)" style="flex:1;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:14px;cursor:pointer">20</button>
-        <button id="cg-btn-30" onclick="cgSetCount(30)" style="flex:1;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:14px;cursor:pointer">30</button>
-      </div>
-    </div>
-
-    <div style="margin-bottom:16px">
-      <div style="font-size:13px;font-weight:600;margin-bottom:8px">Score Display</div>
-      <div style="display:flex;gap:8px">
-        <button id="cg-btn-score-show" onclick="cgSetScore(false)" style="flex:1;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:13px;cursor:pointer">Show Score</button>
-        <button id="cg-btn-score-hide" onclick="cgSetScore(true)"  style="flex:1;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:13px;cursor:pointer">Hide Score</button>
-      </div>
-    </div>
-
-    <div style="margin-bottom:20px">
-      <div style="font-size:13px;font-weight:600;margin-bottom:8px">Read Questions Aloud</div>
-      <div style="display:flex;gap:8px">
-        <button id="cg-btn-read-off"  onclick="cgSetAutoRead(false)" style="flex:1;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:13px;cursor:pointer">Off</button>
-        <button id="cg-btn-read-auto" onclick="cgSetAutoRead(true)"  style="flex:1;padding:10px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:13px;cursor:pointer">Auto-Read 🔊</button>
-      </div>
-    </div>
-
-    <button onclick="cgClose()" style="width:100%;padding:12px;border-radius:10px;background:rgba(255,248,231,0.15);border:none;color:#fff8e7;font-size:15px;font-weight:600;cursor:pointer">Done ✓</button>
-  </div>
-</div>
-</body>
-</html>
+    `You got ${s
