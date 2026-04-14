@@ -275,25 +275,24 @@
     line-height: 1.4;
   }
 
-  /* Caregiver settings — bottom-right corner, above Start button */
+  /* Caregiver settings — inline under subtitle */
   .cg-corner-btn {
-    position: absolute;
-    bottom: 80px;
-    right: 10px;
-    background: rgba(255,255,255,0.12);
-    border: 1.5px solid rgba(255,215,0,0.5);
+    background: rgba(255,255,255,0.1);
+    border: 1.5px solid rgba(255,215,0,0.45);
     border-radius: 10px;
     color: var(--cream);
-    font-size: clamp(10px, 2.4cqw, 12px);
-    padding: 6px 9px;
+    font-size: clamp(11px, 2.6cqw, 13px);
+    padding: 7px 14px;
     cursor: pointer;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 2px;
+    justify-content: center;
+    gap: 8px;
     line-height: 1.3;
     touch-action: manipulation;
-    z-index: 10;
+    margin: 6px auto 10px;
+    width: fit-content;
   }
   .cg-corner-btn span.cg-icon { font-size: clamp(16px, 4cqw, 20px); }
 
@@ -1028,12 +1027,6 @@
 
     <!-- SCREEN: WELCOME -->
     <div class="screen" id="screen-welcome">
-      <!-- Caregiver Settings — tucked in top-right corner -->
-      <button class="cg-corner-btn" onclick="cgTap()" title="Caregiver Settings (triple-tap)">
-        <span class="cg-icon">⚙</span>
-        <span style="font-weight:bold">Caregiver</span>
-        <span style="font-size:clamp(9px,2.2cqw,11px);opacity:0.85;white-space:nowrap">Tap 3 times to open settings</span>
-      </button>
       <!-- Scrollable section -->
       <div class="welcome-scroll">
         <div class="welcome-logo" id="welcome-logo">📺</div>
@@ -1042,6 +1035,11 @@
         <!-- Normal mode content -->
         <div id="normal-welcome">
         <div class="welcome-sub">Relive the golden years of pop culture, music, sports &amp; world events</div>
+        <!-- Caregiver button — inline, under subtitle -->
+        <button class="cg-corner-btn" onclick="cgTap()" title="Caregiver Settings (triple-tap)">
+          <span class="cg-icon">⚙</span>
+          <span><strong>Caregiver Settings</strong> — Tap 3 times to open</span>
+        </button>
         <div class="birth-year-label">When were you born?</div>
         <div class="decade-grid">
           <button class="decade-btn" data-year="1915" onclick="selectDecade(1915)">
@@ -1150,7 +1148,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.13';
+    const APP_VERSION = '1.0.14';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2204,7 +2202,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v14';
+const CACHE = 'memory-lane-v15';
 const FILES = [
   './',
   './index.html',
