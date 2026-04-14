@@ -275,27 +275,27 @@
     line-height: 1.4;
   }
 
-  /* Caregiver settings — top-right corner, visible but unobtrusive */
+  /* Caregiver settings — bottom-right corner, above Start button */
   .cg-corner-btn {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    bottom: 80px;
+    right: 10px;
     background: rgba(255,255,255,0.12);
     border: 1.5px solid rgba(255,215,0,0.5);
     border-radius: 10px;
     color: var(--cream);
-    font-size: clamp(11px, 2.6cqw, 13px);
-    padding: 7px 10px;
+    font-size: clamp(10px, 2.4cqw, 12px);
+    padding: 6px 9px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
+    gap: 2px;
     line-height: 1.3;
     touch-action: manipulation;
     z-index: 10;
   }
-  .cg-corner-btn span.cg-icon { font-size: clamp(18px, 4.5cqw, 24px); }
+  .cg-corner-btn span.cg-icon { font-size: clamp(16px, 4cqw, 20px); }
 
   /* === BIRTH YEAR INPUT === */
   .birth-year-label {
@@ -1150,7 +1150,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.12';
+    const APP_VERSION = '1.0.13';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2204,7 +2204,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v13';
+const CACHE = 'memory-lane-v14';
 const FILES = [
   './',
   './index.html',
