@@ -1321,7 +1321,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.37';
+    const APP_VERSION = '1.0.38';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2283,7 +2283,7 @@ function showGentleResult() { showResult(); }
 
 // ─── RESULT SCREEN ────────────────────────────────────────────────────────────
 function showResult() {
-  const total = gameQuestions.length;
+  const total = (CG_GENTLE_MODE && CG_DIFF_MODE === 'gentle') ? CG_GENTLE_COUNT : gameQuestions.length;
   const pct   = Math.round((score / total) * 100);
   const isSimple = CG_GENTLE_MODE || CG_DIFF_MODE === 'memory_care';
 
@@ -2432,7 +2432,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v38';
+const CACHE = 'memory-lane-v39';
 const FILES = [
   './',
   './index.html',
