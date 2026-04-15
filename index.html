@@ -700,7 +700,7 @@
   #screen-result {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding: 16px;
+    padding: 16px 16px 32px;
     justify-content: flex-start;
   }
   .result-era-badge {
@@ -1217,7 +1217,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.17';
+    const APP_VERSION = '1.0.18';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2292,7 +2292,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v18';
+const CACHE = 'memory-lane-v19';
 const FILES = [
   './',
   './index.html',
