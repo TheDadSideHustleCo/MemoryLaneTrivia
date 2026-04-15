@@ -1096,6 +1096,10 @@
         <!-- Normal mode content -->
         <div id="normal-welcome">
         <div class="welcome-sub">Relive the golden years of pop culture, music, sports &amp; world events</div>
+        <button class="cg-corner-btn" onclick="cgTap()" title="Caregiver Settings (triple-tap)">
+          <span class="cg-icon">⚙</span>
+          <span><strong>Caregiver Settings</strong> — Tap 3 times to open</span>
+        </button>
         <div class="birth-year-label">When were you born?</div>
         <div class="decade-grid">
           <button class="decade-btn" data-year="1915" onclick="selectDecade(1915)">
@@ -1118,13 +1122,12 @@
             <span class="decade-num">1960s</span>
           </button>
         </div>
-        </div><!-- /normal-welcome -->
-
-        <div style="color:rgba(255,248,231,0.38); font-size:10px; line-height:1.4; padding-bottom:4px">
+        <div style="color:rgba(255,248,231,0.38); font-size:10px; line-height:1.4; padding-top:4px">
           Questions from the era you grew up in
         </div>
+        </div><!-- /normal-welcome -->
 
-        <!-- Gentle mode content -->
+        <!-- Gentle / Memory Care mode content -->
         <div id="gentle-welcome" style="display:none; text-align:center; padding: 10px 0;">
           <div style="font-size: clamp(50px,14cqw,72px); margin-bottom:8px">🌸</div>
           <div style="color:var(--gold); font-size:clamp(16px,4.5cqw,22px); font-weight:bold; margin-bottom:6px">Picture Time</div>
@@ -1223,7 +1226,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.25';
+    const APP_VERSION = '1.0.26';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2298,7 +2301,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v26';
+const CACHE = 'memory-lane-v27';
 const FILES = [
   './',
   './index.html',
