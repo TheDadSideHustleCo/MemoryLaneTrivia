@@ -806,6 +806,96 @@
     max-width: none;
   }
 
+  /* === LANDSCAPE OVERLAY === */
+  #landscape-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--navy);
+    z-index: 99999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    text-align: center;
+    padding: 30px;
+  }
+  #landscape-overlay.show { display: flex; }
+  .landscape-icon {
+    font-size: 72px;
+    animation: rotateHint 2s ease-in-out infinite;
+  }
+  @keyframes rotateHint {
+    0%, 100% { transform: rotate(0deg); }
+    40%       { transform: rotate(-90deg); }
+    60%       { transform: rotate(-90deg); }
+  }
+  .landscape-title {
+    color: var(--gold);
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: bold;
+  }
+  .landscape-sub {
+    color: var(--cream);
+    font-size: clamp(14px, 3vw, 18px);
+    opacity: 0.75;
+  }
+
+  /* === HOW TO PLAY MODAL === */
+  #help-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 9998;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  #help-overlay.show { display: flex; }
+  .help-modal {
+    background: var(--navy-light);
+    border: 2px solid rgba(255,215,0,0.4);
+    border-radius: 18px;
+    padding: 20px;
+    max-width: 420px;
+    width: 100%;
+    color: var(--cream);
+    font-family: inherit;
+  }
+  .help-title {
+    color: var(--gold);
+    font-size: clamp(18px, 5cqw, 24px);
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .help-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .help-step-num {
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 900;
+    font-size: 14px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .help-step-text {
+    font-size: clamp(13px, 3.5cqw, 15px);
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+  .help-step-text strong { color: var(--gold); }
+
   /* === LOADING SCREEN === */
   .loading-wrap {
     display: flex;
@@ -1145,6 +1235,9 @@
         <button class="big-btn" id="start-btn" onclick="startGame()" disabled>
           Start Playing ▶
         </button>
+        <div style="text-align:center;margin-top:6px">
+          <button onclick="openHelp()" style="background:none;border:none;color:rgba(255,248,231,0.5);font-size:clamp(11px,2.8cqw,13px);cursor:pointer;text-decoration:underline;font-family:inherit;touch-action:manipulation">❓ How to Play</button>
+        </div>
       </div>
     </div>
 
@@ -1226,7 +1319,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.26';
+    const APP_VERSION = '1.0.27';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2271,6 +2364,31 @@ function showError(msg) {
   showScreen('error');
 }
 
+// ─── LANDSCAPE DETECTION ─────────────────────────────────────────────────────
+function checkOrientation() {
+  const isLandscape = window.innerWidth > window.innerHeight;
+  const overlay = document.getElementById('landscape-overlay');
+  if (overlay) overlay.classList.toggle('show', isLandscape);
+}
+window.addEventListener('resize', checkOrientation);
+window.addEventListener('orientationchange', checkOrientation);
+checkOrientation();
+
+// ─── HOW TO PLAY ──────────────────────────────────────────────────────────────
+function openHelp() {
+  document.getElementById('help-overlay').classList.add('show');
+}
+function closeHelp() {
+  document.getElementById('help-overlay').classList.remove('show');
+  safeStorage.setItem('help_seen', 'true');
+}
+// Show on first launch
+if (safeStorage.getItem('help_seen') !== 'true') {
+  window.addEventListener('load', function() {
+    setTimeout(openHelp, 800);
+  });
+}
+
 // ─── PAUSE ON TAB HIDE ────────────────────────────────────────────────────────
 document.addEventListener('visibilitychange', function() {
   if (document.hidden) {
@@ -2301,7 +2419,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v27';
+const CACHE = 'memory-lane-v28';
 const FILES = [
   './',
   './index.html',
@@ -2355,6 +2473,41 @@ self.addEventListener('fetch', e => e.respondWith(
   document.head.appendChild(link);
 })();
 </script>
+
+<!-- ─── LANDSCAPE OVERLAY ──────────────────────────────────────────────────── -->
+<div id="landscape-overlay">
+  <div class="landscape-icon">📱</div>
+  <div class="landscape-title">Please Rotate Your Device</div>
+  <div class="landscape-sub">Memory Lane Trivia plays best in portrait mode</div>
+</div>
+
+<!-- ─── HOW TO PLAY MODAL ───────────────────────────────────────────────────── -->
+<div id="help-overlay">
+  <div class="help-modal">
+    <div class="help-title">🎮 How to Play</div>
+    <div class="help-step">
+      <div class="help-step-num">1</div>
+      <div class="help-step-text"><strong>Pick your birth decade</strong> — we'll find questions from the era you grew up in.</div>
+    </div>
+    <div class="help-step">
+      <div class="help-step-num">2</div>
+      <div class="help-step-text"><strong>Tap Start Playing</strong> and answer each question by tapping one of the four options.</div>
+    </div>
+    <div class="help-step">
+      <div class="help-step-num">3</div>
+      <div class="help-step-text"><strong>Green means correct</strong>, red means wrong — you'll see the right answer and a fun fact after each one.</div>
+    </div>
+    <div class="help-step">
+      <div class="help-step-num">4</div>
+      <div class="help-step-text"><strong>Tap Next Question</strong> to keep going. See how many you can get right!</div>
+    </div>
+    <div class="help-step">
+      <div class="help-step-num">5</div>
+      <div class="help-step-text"><strong>Caregivers:</strong> tap the ⚙ Caregiver Settings button <em>three times</em> to adjust difficulty and options.</div>
+    </div>
+    <button class="big-btn" style="margin-top:8px" onclick="closeHelp()">Got it! Let's Play 🎉</button>
+  </div>
+</div>
 
 <!-- ─── CAREGIVER PANEL ─────────────────────────────────────────────────────── -->
 <div id="cg-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:9999;display:none;align-items:center;justify-content:center;padding:12px">
