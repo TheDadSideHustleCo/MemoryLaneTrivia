@@ -40,6 +40,7 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
+    touch-action: manipulation;
   }
 
   /* === WOOD GRAIN BACKGROUND === */
@@ -72,6 +73,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    touch-action: manipulation;
     /* Safe-area insets keep TV clear of notch/home indicator on iOS */
     padding: max(2px, env(safe-area-inset-top))
              max(2px, env(safe-area-inset-right))
@@ -1319,7 +1321,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.27';
+    const APP_VERSION = '1.0.28';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2419,7 +2421,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v28';
+const CACHE = 'memory-lane-v29';
 const FILES = [
   './',
   './index.html',
