@@ -1321,7 +1321,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.36';
+    const APP_VERSION = '1.0.37';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2128,15 +2128,19 @@ function nextQuestion() {
   currentIdx++;
   if (CG_GENTLE_MODE && CG_DIFF_MODE === 'gentle') {
     if (currentIdx >= CG_GENTLE_COUNT) {
+      answered = false;
       showGentleResult();
     } else {
+      answered = false;
       renderGentleQuestion();
     }
     return;
   }
   if (currentIdx >= gameQuestions.length) {
+    answered = false;
     showResult();
   } else {
+    answered = false;
     renderQuestion();
   }
 }
@@ -2428,7 +2432,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v37';
+const CACHE = 'memory-lane-v38';
 const FILES = [
   './',
   './index.html',
