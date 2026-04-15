@@ -1119,7 +1119,7 @@
         </div>
 
         <!-- Caregiver button — always visible regardless of mode -->
-        <button class="cg-corner-btn" onclick="cgTap()" title="Caregiver Settings (triple-tap)">
+        <button id="cg-welcome-btn" class="cg-corner-btn" onclick="cgTap()" title="Caregiver Settings (triple-tap)">
           <span class="cg-icon">⚙</span>
           <span><strong>Caregiver Settings</strong> — Tap 3 times to open</span>
         </button>
@@ -1129,6 +1129,10 @@
           <div style="font-size: clamp(50px,14cqw,72px); margin-bottom:8px">🌸</div>
           <div style="color:var(--gold); font-size:clamp(16px,4.5cqw,22px); font-weight:bold; margin-bottom:6px">Picture Time</div>
           <div style="color:var(--cream); font-size:clamp(14px,3.5cqw,17px); opacity:0.8; line-height:1.4">Simple picture questions.<br>Tap Start when ready!</div>
+          <button class="cg-corner-btn" style="margin:14px auto 0" onclick="cgTap()" title="Caregiver Settings (triple-tap)">
+            <span class="cg-icon">⚙</span>
+            <span><strong>Caregiver Settings</strong> — Tap 3 times to open</span>
+          </button>
         </div>
 
       </div><!-- /welcome-scroll -->
@@ -1219,7 +1223,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.19';
+    const APP_VERSION = '1.0.20';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2294,7 +2298,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v20';
+const CACHE = 'memory-lane-v21';
 const FILES = [
   './',
   './index.html',
