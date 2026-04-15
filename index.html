@@ -73,16 +73,16 @@
     align-items: center;
     justify-content: center;
     /* Safe-area insets keep TV clear of notch/home indicator on iOS */
-    padding: max(6px, env(safe-area-inset-top))
-             max(10px, env(safe-area-inset-right))
-             max(6px, env(safe-area-inset-bottom))
-             max(10px, env(safe-area-inset-left));
+    padding: max(2px, env(safe-area-inset-top))
+             max(2px, env(safe-area-inset-right))
+             max(2px, env(safe-area-inset-bottom))
+             max(2px, env(safe-area-inset-left));
   }
 
   /* ── TV wrap: relative container, aspect-ratio matches SVG viewBox ── */
   .tv-wrap {
     position: relative;
-    width: min(92dvw, calc(94svh * 0.8));
+    width: min(98dvw, calc(98svh * 0.8));
     aspect-ratio: 480 / 600;
     filter: drop-shadow(0 24px 64px rgba(0,0,0,0.82));
   }
@@ -1229,7 +1229,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.23';
+    const APP_VERSION = '1.0.24';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2304,7 +2304,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v24';
+const CACHE = 'memory-lane-v25';
 const FILES = [
   './',
   './index.html',
