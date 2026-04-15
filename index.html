@@ -1321,7 +1321,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.31';
+    const APP_VERSION = '1.0.32';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -1953,8 +1953,8 @@ function startGame() {
     if (pool.length < 5) pool = easy.concat(std); // fallback
   }
 
-  // Apply category filter (skip for memory_care which has its own category)
-  if (CG_DIFF_MODE !== 'memory_care' && CG_CATEGORIES.length < ALL_CATEGORIES.length) {
+  // Apply category filter
+  if (CG_CATEGORIES.length < ALL_CATEGORIES.length) {
     const catFiltered = pool.filter(q => CG_CATEGORIES.includes(q.category));
     if (catFiltered.length >= 5) pool = catFiltered;
   }
@@ -2428,7 +2428,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v32';
+const CACHE = 'memory-lane-v33';
 const FILES = [
   './',
   './index.html',
