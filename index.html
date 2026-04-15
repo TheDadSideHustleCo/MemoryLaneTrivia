@@ -82,18 +82,18 @@
   /* ── TV wrap: relative container, aspect-ratio matches SVG viewBox ── */
   .tv-wrap {
     position: relative;
-    width: min(92dvw, calc(94svh * 0.8));
-    aspect-ratio: 480 / 600;
+    width: min(92dvw, calc(94svh * 0.727));
+    aspect-ratio: 480 / 660;
     filter: drop-shadow(0 24px 64px rgba(0,0,0,0.82));
   }
   /* Padding-hack safety net: gives .tv-wrap a definite height even when
      aspect-ratio is ignored (flex item with only abs-positioned children).
      padding-top % is relative to CONTAINING BLOCK WIDTH = .tv-wrap's own width.
-     125% = 600/480 = the same ratio as aspect-ratio above.          */
+     137.5% = 660/480 = the same ratio as aspect-ratio above.          */
   .tv-wrap::before {
     content: '';
     display: block;
-    padding-top: 125%;
+    padding-top: 137.5%;
   }
 
   /* ── SVG TV frame: floats on top, no pointer events ── */
@@ -700,7 +700,7 @@
   #screen-result {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding: 16px 16px 32px;
+    padding: 16px 16px 48px;
     justify-content: flex-start;
   }
   .result-era-badge {
@@ -1223,7 +1223,7 @@
 'use strict';
 
 // ─── VERSION ─────────────────────────────────────────────────────────────────
-    const APP_VERSION = '1.0.20';
+    const APP_VERSION = '1.0.21';
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let allQuestions = [];
@@ -2298,7 +2298,7 @@ document.addEventListener('visibilitychange', function() {
 // ─── SERVICE WORKER (PWA install) ─────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-const CACHE = 'memory-lane-v21';
+const CACHE = 'memory-lane-v22';
 const FILES = [
   './',
   './index.html',
