@@ -2576,7 +2576,10 @@ self.addEventListener('fetch', e => e.respondWith(
     <!-- HEADER -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
       <div style="font-size:18px;font-weight:700">⚙️ Caregiver Settings</div>
-      <div style="font-size:11px;opacity:0.4;text-align:right">Changes saved automatically</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-size:11px;opacity:0.4">Changes saved automatically</div>
+        <button onclick="cgClose()" aria-label="Close settings" style="background:rgba(255,255,255,0.12);border:2px solid rgba(255,248,231,0.3);border-radius:8px;color:#fff8e7;font-size:18px;line-height:1;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
     </div>
 
     <!-- ROW 1: Difficulty (left, wider) + Gentle length + Questions per game (right) -->
@@ -2650,10 +2653,4 @@ self.addEventListener('fetch', e => e.respondWith(
         <button id="cg-cat-movies"       onclick="cgToggleCategory('movies')"       style="padding:8px 4px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:12px;cursor:pointer">🎬<br>Movies</button>
         <button id="cg-cat-sports"       onclick="cgToggleCategory('sports')"       style="padding:8px 4px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:12px;cursor:pointer">🏆<br>Sports</button>
         <button id="cg-cat-world_events" onclick="cgToggleCategory('world_events')" style="padding:8px 4px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:12px;cursor:pointer">🌎<br>World</button>
-        <button id="cg-cat-americana"    onclick="cgToggleCategory('americana')"    style="padding:8px 4px;border-radius:8px;border:2px solid transparent;background:rgba(255,255,255,0.1);color:#fff8e7;font-size:12px;cursor:pointer">🎡<br>Daily Life</button>
-      </div>
-    </div>
-
-    <!-- Start button -->
-    <div style="text-align:center;margin-top:8px">
-      <button onclick="cgClose()" style="background:linear-gradient(135deg,#c9a227,#e8c547);color:#0a0a1a;font-weight:700;font-size:16px;padding:12px 40px;border
+        <button id="cg-cat-americana"    onclick="cgToggleCategory('americana')"    style="padding:8px 4px;border-radius:8px;border:2px solid transparen
