@@ -2424,9 +2424,11 @@ document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, 
 
 // ─── LANDSCAPE DETECTION ─────────────────────────────────────────────────────
 function checkOrientation() {
+  // Only warn on mobile/tablet — desktops are always landscape and that's fine
+  const isMobile = ('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.screen.width < 1200;
   const isLandscape = window.innerWidth > window.innerHeight;
   const overlay = document.getElementById('landscape-overlay');
-  if (overlay) overlay.classList.toggle('show', isLandscape);
+  if (overlay) overlay.classList.toggle('show', isMobile && isLandscape);
 }
 window.addEventListener('resize', checkOrientation);
 window.addEventListener('orientationchange', checkOrientation);
@@ -2654,12 +2656,4 @@ self.addEventListener('fetch', e => e.respondWith(
 
     <!-- Start button -->
     <div style="text-align:center;margin-top:8px">
-      <button onclick="cgClose()" style="background:linear-gradient(135deg,#c9a227,#e8c547);color:#0a0a1a;font-weight:700;font-size:16px;padding:12px 40px;border:none;border-radius:30px;cursor:pointer;letter-spacing:0.5px">
-        ▶ Start Play
-      </button>
-    </div>
-  </div><!-- end caregiver-panel -->
-</div><!-- end screen-caregiver -->
-
-</body>
-</html>
+      <button onclick="cgClose()" style="background:linear-gradient(135deg,#c9a227,#e8c547);color:#0a0a1a;font-weight:700;font-size:16px;padding:12px 40px;border
